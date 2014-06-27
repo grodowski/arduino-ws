@@ -30,9 +30,11 @@ GEM
       rack (>= 0.9.1)
     rack-respond_to (0.9.8)
       rack-accept-media-types (>= 0.6)
+    redis (3.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   goliath
+  redis
