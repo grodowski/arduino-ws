@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'goliath'
 gem 'redis'
+gem 'goliath'
+gem 'grape'
