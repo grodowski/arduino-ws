@@ -15,14 +15,15 @@ class Server < Goliath::WebSocket
   end
 
   def on_message(env, msg)
-    puts 'received on_message with ' + msg
-
+    env.logger.info 'received on_message with ' + msg
     env['handler'].send_text_frame msg
-
   end
 
   def on_close(env)
-    env.logger.info("CLOSED")
+    if websocket?
+      Thread.kill(redis_sub_thread)
+      env.logger.info("WebSocket connection closed...")
+    end
   end
 
   def on_error(env, error)
@@ -30,7 +31,7 @@ class Server < Goliath::WebSocket
   end
 
   def response(env)
-    if env['REQUEST_PATH'] == '/ws'
+    if websocket?
       super(env)
     else
       API::Publisher.call(env)
@@ -38,6 +39,10 @@ class Server < Goliath::WebSocket
   end
 
   private
+
+  def websocket?
+    env['REQUEST_PATH'] == '/ws'
+  end
 
   def setup(env)
     @redis ||= Redis.new
