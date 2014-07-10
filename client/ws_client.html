@@ -12,7 +12,7 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function() {
-        var ws = new WebSocket("ws://localhost:9000");
+        var ws = new WebSocket("ws://localhost:9000/ws");
         ws.onopen = function()
         {
             console.log("WS Open");
