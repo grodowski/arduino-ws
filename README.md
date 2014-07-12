@@ -6,8 +6,10 @@ Student project by Jan Grodowski - an asynchronous web server for processing com
 Tasks
 -----
 
-* Add parameters to Grape API (status: unstarted)
+* Define parameters for Grape API (status: unstarted)
 * Arduino WS Client (status: unstarted)
+* Arduino Sketch for temperature logging
 * Data Model using ActiveRecord (status: unstarted)
 * Authentication (status: ustarted)
-* Client Application (Rails + JS?)
+* Client Application (Rails + JS or Rack rendering?)
+* Implement Arduino with Scheduler libraries
