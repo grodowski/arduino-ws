@@ -14,7 +14,7 @@ All requests will be authenticated via HTTP Basic Auth and SSL, so that 3rd part
 **Refresh the list of samples for a given unit id**
 
 ```
-**GET /:device_id/log**
+GET /:device_id/log
 {since: '142045667'} # unix timestamp
 
 [
@@ -27,7 +27,7 @@ All requests will be authenticated via HTTP Basic Auth and SSL, so that 3rd part
 **Fetch treshold settings for a given unit id**
 
 ```
-**GET /:device_id/tresholds**
+GET /:device_id/tresholds
 
 {
 	alarm_min_c: -34.2,
@@ -40,7 +40,7 @@ All requests will be authenticated via HTTP Basic Auth and SSL, so that 3rd part
 **Set treshold for a given unit**
 
 ```
-**POST /:device_id/tresholds**
+POST /:device_id/tresholds
 # All parameters are optional
 {
 	alarm_min_c: 20,
