@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'redis'
 gem 'goliath'
 gem 'em-mongo'
+gem 'em-hiredis'
 gem 'grape'
 gem 'bson_ext'

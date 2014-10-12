@@ -1,2 +1,16 @@
-h2
-  | angular zainstalizowany
+.col-md-4.col-sm-6.sensor-tile-wrapper ng-repeat="sensor in sensors"
+  .sensor-tile
+    p.lead.title
+      | {{ sensor.device_name }}
+    p
+      | Device UID:
+      |  {{ sensor.device_uid }}
+    table.table.table-striped
+      tr
+        th Time
+        th Value
+      tr ng-repeat="measurement in sensor.measurements"
+        td
+          | {{ measurement.created_at | date : 'dd/MM/yy HH:mm:ss' }}
+        td
+          | {{ measurement.temp_c }}

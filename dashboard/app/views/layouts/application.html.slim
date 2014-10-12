@@ -9,7 +9,7 @@ html ng-app="Dashboard"
   body ng-controller="RootCtrl"
     = render 'shared/flash_messages'
     .navbar.navbar-default.navbar-static-top role="navigation"
-      .container
+      .container-fluid
         .navbar-header
           button.navbar-toggle.collapsed data-target=".navbar-collapse" data-toggle="collapse" type="button"
             span.sr-only Toggle navigation
@@ -20,4 +20,4 @@ html ng-app="Dashboard"
         = render 'shared/nav_menu' if user_signed_in?
     / end navigation
 
-    .container.main ng-view=""
+    .container-fluid.main ng-view=""
