@@ -1,0 +1,11 @@
+#= require_self
+#= require_tree ./services
+#= require_tree ./filters
+#= require_tree ./controllers
+#= require_tree ./directives
+
+Dashboard = angular.module('Dashboard', ['ngRoute'])
+
+Dashboard.config(['$routeProvider', ($routeProvider) ->
+  $routeProvider.when('/', { templateUrl: "<%= asset_path('main.html') %>", controller: 'IndexCtrl' } )
+])

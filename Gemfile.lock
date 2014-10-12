@@ -14,11 +14,17 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    bson (1.9.2)
+    bson_ext (1.9.2)
+      bson (~> 1.9.2)
     builder (3.2.2)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    em-mongo (0.5.1)
+      bson (~> 1.9.2)
+      eventmachine (>= 0.12.10)
     em-synchrony (1.0.3)
       eventmachine (>= 1.0.0.beta.1)
     em-websocket (0.3.8)
@@ -80,6 +86,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson_ext
+  em-mongo
   goliath
   grape
   redis

@@ -1,0 +1,7 @@
+.navbar-collapse.collapse
+  ul.nav.navbar-nav
+    li = link_to t('menu.dashboard'), root_path
+    li = link_to t('menu.devices'), '#'
+    li = link_to t('menu.settings'), '#'
+  ul.nav.navbar-nav.navbar-right
+    li = link_to t('auth.sign_out'), destroy_user_session_path, method: :delete, class: 'navbar-right'

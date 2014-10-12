@@ -57,8 +57,10 @@ DS18B20 digital thermomether Arduino setup (status: **unstarted**)
 http://playground.arduino.cc/Learning/OneWire - 1-Wire protocol for the DS18B20
 http://milesburton.com/Dallas_Temperature_Control_Library - Dallas Instruments control library for arduino
 
-Arduino WS Client (status: **unstarted**)
+Arduino WS Client (status: **started**)
 ---
+
+
 
 Arduino Sketch for temperature logging (status: **unstarted**)
 ---

@@ -8,14 +8,23 @@ require './api/publisher'
 class Server < Goliath::WebSocket
   attr_accessor :redis, :redis_sub_thread
 
+  PAYLOAD_TYPES = %w(data)
+
   def on_open(env)
-    puts 'received on_open'
     setup(env)
-    puts 'ws ready!'
+    env.logger.info 'Setup ready'
   end
 
   def on_message(env, msg)
-    env.logger.info 'received on_message with ' + msg
+    # format
+    # {'type': 'data', 'temp_c': '12.33'}
+    data = Hashie::Mash.new(JSON.parse msg)
+    return unless PAYLOAD_TYPES.include? data.type
+
+    # save data to the db (mongo or mysql)
+    env.logger.info 'received data' + data.temp_c.to_s
+
+    # echo the message back to the client
     env['handler'].send_text_frame msg
   end
 
@@ -50,14 +59,8 @@ class Server < Goliath::WebSocket
       puts 'subscribing...'
       redis.subscribe 'test-channel' do |on|
         on.message do |channel, msg|
-          begin
-            data = JSON.parse msg
-            puts 'received redis command' + msg
-            env['handler'].send_text_frame msg
-            puts 'sent frame!'
-          rescue => e
-            puts e.message
-          end
+          data = JSON.parse msg
+          env['handler'].send_text_frame msg
         end
       end
     end

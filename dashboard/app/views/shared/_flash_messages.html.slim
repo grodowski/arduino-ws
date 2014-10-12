@@ -1,0 +1,12 @@
+.flash-messages
+  - if flash[:notice]
+    .flash.alert-success
+      = flash[:notice]
+  - if flash[:alert]
+    .flash.alert-danger
+      = flash[:alert]
+  - if flash.present?
+    javascript:
+      $(document).ready(function() {
+        $('.flash-messages').slideDown();
+      });

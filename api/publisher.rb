@@ -9,6 +9,8 @@ module API
         {status: 'published!'}
       end
     end
+    
+    # get :data, params: device_id
 
   end
 end
