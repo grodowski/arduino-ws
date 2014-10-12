@@ -25,7 +25,7 @@ en:
     welcome_text: 'Please sign in to start.'
   menu:
     dashboard: 'Dashboard'
-    devices: 'Devices'
+    devices: 'Sensors'
     settings: 'Settings'
   auth:
     email: 'Email'

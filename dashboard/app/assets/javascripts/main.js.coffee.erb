@@ -6,6 +6,15 @@
 
 Dashboard = angular.module('Dashboard', ['ngRoute'])
 
-Dashboard.config(['$routeProvider', ($routeProvider) ->
-  $routeProvider.when('/', { templateUrl: "<%= asset_path('main.html') %>", controller: 'IndexCtrl' } )
+Dashboard.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
+  $locationProvider.html5Mode(true)
+
+  $routeProvider.when '/',
+    templateUrl: "<%= asset_path('dashboard.html') %>"
+    controller: 'DashboardCtrl'
+
+  $routeProvider.when '/sensors',
+    templateUrl: "<%= asset_path('sensors.html') %>"
+    controller: 'SensorsCtrl'
+
 ])

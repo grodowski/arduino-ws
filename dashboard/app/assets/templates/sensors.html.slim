@@ -1,0 +1,23 @@
+h2 Manage sensors
+table.table.table-hover
+  tr ng-repeat="sensor in sensors" ng-click="editSensor(sensor)"
+    td
+      strong
+        | {{sensor.device_name}}
+    td
+      | {{sensor.device_uid}}
+    td
+      | Last active:
+      |  {{sensor.last_activity}}
+
+button.btn.btn-primary
+  span.glyphicon.glyphicon-plus
+
+form#sensor_form.form-inline.hidden
+  .form-group
+    input.form-control type="text" id="sensor_name" placeholder="Name"
+  .form-group
+    input.form-control type="text" id="sensor_device_uid" placeholder="Device identifier"
+  .form-group
+    input.btn.btn-primary type="submit" value="Save"
+
