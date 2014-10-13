@@ -2,6 +2,7 @@
   $scope.get_dashboard = ->
     url = '/dashboard.json'
     $http.get(url).success((data) ->
+      $scope.current_user = data.current_user
       $scope.sensors = data.sensors
       $scope.init_realtime_updates()
     )
@@ -9,7 +10,7 @@
 
   # TODO refactor into an angular Service
   $scope.init_realtime_updates = ->
-    ws = new WebSocket("ws://localhost:9001");
+    ws = new WebSocket("ws://localhost:9001/" + $scope.current_user._id.$oid);
     ws.onopen = ->
       console.log "Client WebSocket open"
     ws.onmessage = (evt) ->

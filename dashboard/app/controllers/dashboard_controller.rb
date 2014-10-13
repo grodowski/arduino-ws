@@ -3,7 +3,6 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    result = Sensor.where(user_id: current_user.id).slice(measurements: -5)
-    respond_with sensors: result
+    respond_with DashboardPresenter.new(current_user)
   end
 end
