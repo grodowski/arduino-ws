@@ -5,8 +5,8 @@ class DashboardPresenter
     @user = user
   end
 
-  def recent_measurements(sensor, limit = 5)
-    sensor.measurements.desc(:created_at).limit(limit)
+  def recent_measurements(sensor, limit = 30)
+    sensor.measurements.desc(:created_at).limit(limit).reverse!
   end
 
   def as_json(opts = {})

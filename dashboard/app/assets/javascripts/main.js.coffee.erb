@@ -4,7 +4,7 @@
 #= require_tree ./controllers
 #= require_tree ./directives
 
-Dashboard = angular.module('Dashboard', ['ngRoute'])
+Dashboard = angular.module('Dashboard', ['ngRoute', 'chart.js'])
 
 Dashboard.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
   $locationProvider.html5Mode(true)
@@ -17,4 +17,8 @@ Dashboard.config(['$routeProvider', '$locationProvider', ($routeProvider, $locat
     templateUrl: "<%= asset_path('sensors.html') %>"
     controller: 'SensorsCtrl'
 
+  Chart.defaults.global.animation = false
+  Chart.defaults.global.showTooltips = false
+  Chart.defaults.global.scaleIntegersOnly = true
+  
 ])

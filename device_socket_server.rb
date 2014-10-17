@@ -39,13 +39,15 @@ class DeviceSocketServer < Goliath::WebSocket
         }
       }
     )
-    data_json = data.merge({created_at: timestamp, updated_at: timestamp}).to_json
-    redis.publish "#{data.device_uid}_#{data.type}", data_json
+    data_json = data.merge({created_at: timestamp.iso8601, updated_at: timestamp.iso8601}).to_json
+    redis.publish data.device_uid, data_json
     env.logger.info data.temp_c  
     env['handler'].send_text_frame 'OK'
   end
 
   def on_close(env)
+    redis.close_connection
+    mongo.close
     env.logger.info('Socket connection closed')
   end
 

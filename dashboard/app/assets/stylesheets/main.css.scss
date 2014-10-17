@@ -12,13 +12,8 @@
   }
 }
 
-.sensor-tile-wrapper {
-  padding: 6px;
-  .sensor-tile {
-    border: 1px solid $dimmed_white;
-    padding: 6px;
-    .title {
-      font-weight: bold;
-    }
-  }
+canvas {
+  width: 100% !important;
+  max-width: 800px;
+  height: auto !important;
 }
