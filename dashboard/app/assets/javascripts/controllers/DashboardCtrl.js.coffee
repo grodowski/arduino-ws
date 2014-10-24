@@ -1,6 +1,4 @@
 @DashboardCtrl = ($scope, $http, $filter) ->
-  $scope.test_chart = ''
-
   $scope.get_dashboard = ->
     url = '/dashboard.json'
     $http.get(url).success((data) ->
@@ -9,7 +7,7 @@
       _init_realtime_updates()
       _touch_charts()
     )
-
+    
   # TODO refactor into an angular Service
   _init_realtime_updates = ->
     ws = new WebSocket("ws://localhost:9001/" + $scope.current_user._id.$oid);

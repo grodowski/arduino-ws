@@ -1,1 +1,10 @@
 @import "variables";
+
+.panel-heading {
+  a {
+    color: $light_gray;
+    .glyphicon {
+      top: 4px;
+    }
+  }
+}

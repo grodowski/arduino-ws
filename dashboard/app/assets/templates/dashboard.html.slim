@@ -1,21 +1,35 @@
-.col-md-4.col-sm-6.sensor-tile-wrapper ng-repeat="sensor in sensors"
-  .panel.panel-default
-    .panel-heading
-      strong
-        | {{ sensor.device_name }}
-      span.small
-        |  {{ sensor.device_uid }}
-    .panel-body
-      canvas id="{{sensor.device_uid + '_chart'}}" class="chart chart-line" data="sensor.chart_data" labels="sensor.chart_labels"
-      table.table.table-striped
-       tr
-         th Timestamp
-         th C
-         th F
-       tr ng-repeat="measurement in sensor.measurements | reverse | limitTo: 5"
-         td
-           | {{ measurement.created_at | date : 'dd/MM/yy HH:mm:ss' }}
-         td
-           | {{ measurement.temp_c }}
-         td
-           | {{ measurement.temp_c | celcius_to_fahrenheit }}
+.row ng-show="add_panel_open"
+  .col-md-12
+    .panel.panel-primary
+      .panel-heading
+        strong Sensor Configuration
+        .pull-right
+          a ng-click="close_panel()"
+            .glyphicon.glyphicon-remove
+      .panel-body 
+        #add_sensor_form
+.row
+  .col-md-4.col-sm-6.sensor-tile-wrapper ng-repeat="sensor in sensors"
+    .panel.panel-default
+      .panel-heading
+        strong
+          | {{ sensor.device_name }}
+        span.small
+          |  {{ sensor.device_uid }}
+          .pull-right
+            a href=""
+              .glyphicon.glyphicon-remove
+      .panel-body
+        canvas id="{{sensor.device_uid + '_chart'}}" class="chart chart-line" data="sensor.chart_data" labels="sensor.chart_labels"
+        table.table.table-striped
+         tr
+           th Timestamp
+           th C
+           th F
+         tr ng-repeat="measurement in sensor.measurements | reverse | limitTo: 5"
+           td
+             | {{ measurement.created_at | date : 'dd/MM/yy HH:mm:ss' }}
+           td
+             | {{ measurement.temp_c }}
+           td
+             | {{ measurement.temp_c | celcius_to_fahrenheit }}

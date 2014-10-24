@@ -33,6 +33,9 @@ GEM
     em-websocket (0.3.8)
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
+    em-websocket-client (0.1.2)
+      eventmachine
+      websocket
     equalizer (0.0.9)
     eventmachine (1.0.3)
     goliath (1.0.4)
@@ -84,6 +87,7 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0.3)
       equalizer (~> 0.0.9)
+    websocket (1.2.1)
 
 PLATFORMS
   ruby
@@ -92,5 +96,6 @@ DEPENDENCIES
   bson_ext
   em-hiredis
   em-mongo
+  em-websocket-client
   goliath
   grape

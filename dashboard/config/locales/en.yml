@@ -20,12 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  project_name: 'Arduino Sensors'
+  project_name: 'ARTS'
   start:
     welcome_text: 'Please sign in to start.'
   menu:
     dashboard: 'Dashboard'
-    devices: 'Sensors'
+    add_sensor: 'Add Sensor'
     settings: 'Settings'
   auth:
     email: 'Email'
