@@ -1,4 +1,4 @@
-@DashboardCtrl = ($scope, $http, $filter) ->
+@DashboardCtrl = ($scope, $http, $filter, $timeout, sensor_service) ->
   $scope.get_dashboard = ->
     url = '/dashboard.json'
     $http.get(url).success((data) ->
@@ -7,6 +7,19 @@
       _init_realtime_updates()
       _touch_charts()
     )
+  
+  $scope.is_active = (sensor) -> 
+    sensor_service().is_active(sensor)
+    
+  $scope.sensor_status = (sensor) -> 
+    # TODO find a better solution for this problem
+    $timeout( ->
+      $scope.$apply();
+    , 3000)
+    if $scope.is_active(sensor)
+      'active'
+    else
+      'last activity ' + $filter('date')(sensor_service().last_activity(sensor), 'dd/MM/yy HH:mm:ss')
     
   # TODO refactor into an angular Service
   _init_realtime_updates = ->
@@ -25,7 +38,8 @@
         $scope.$apply()
         
     ws.onclose = ->
-      console.log("Connection is closed...");
+      $scope.show_flash('WebSocket closed')
+      # TODO try to reconnect
 
   _touch_charts = ->
     _.each $scope.sensors, (sensor) ->

@@ -8,16 +8,20 @@ class SensorsController < ApplicationController
   def create
     sensor = current_user.sensors.build(sensor_params)
     if sensor.save
-      respond_with sensor: sensor
+      respond_with sensor
     else
       render json: {errors: sensor.errors}, status: 422
     end
   end
 
   def update
+    # TODO implement sensor settings
   end
 
   def destroy
+    sensor = current_users.sensors.find(params[:id])
+    sensor.destroy
+    head 200, format: :json
   end
   
   private 

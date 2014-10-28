@@ -4,6 +4,18 @@
 
 }
 
+.sensor-tile-wrapper {
+  a {
+    &.option {
+      color: #FFF;
+      padding: 0px 3px;
+      &:hover {
+        color: $light_gray;
+      }
+    }
+  }
+}
+
 .flash-messages {
   display: none;
   width: 100%;

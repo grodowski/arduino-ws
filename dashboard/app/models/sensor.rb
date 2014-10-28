@@ -7,4 +7,7 @@ class Sensor
 
   field :device_uid, type: String
   field :device_name, type: String
+  
+  validates :device_uid, :device_name, presence: true
+  validates :device_uid, uniqueness: true
 end

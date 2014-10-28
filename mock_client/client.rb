@@ -13,8 +13,9 @@ EM.run do
   conn.callback do
     EM.add_periodic_timer 3 do 
       sign = prg.rand(100) > 50 ? :+ : :-
-      val = val.send(sign, prg.rand(2))
+      val = val.send(sign, prg.rand(2)).round(2)
       data = {type: 'data', temp_c: val}.to_json
+      conn.send_msg data
     end
     puts 'started socket client... ' + ARGV[0]
   end

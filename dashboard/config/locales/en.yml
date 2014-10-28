@@ -20,12 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  project_name: 'ARTS'
+  project_name: 'Sensors'
   start:
     welcome_text: 'Please sign in to start.'
   menu:
     dashboard: 'Dashboard'
-    add_sensor: 'Add Sensor'
+    about: 'About'
     settings: 'Settings'
   auth:
     email: 'Email'
