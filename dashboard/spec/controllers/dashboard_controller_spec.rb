@@ -10,7 +10,7 @@ describe DashboardController do
 
   context 'GET index' do
     it 'renders sensor and data for current user' do
-      2.times { user.sensors.push(build(:sensor)) }
+      2.times { |n| user.sensors.push(build(:sensor, device_uid: "device_#{n}")) }
       get :show, format: :json
       body = JSON.parse(response.body)
       expect(body['current_user']['email']).to eq user.email

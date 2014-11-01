@@ -1,33 +1,51 @@
 .row
   .col-md-4.col-sm-6.sensor-tile-wrapper ng-repeat="sensor in sensors"
-    .panel.panel-primary
+    .panel ng-class="{true: 'panel-primary', false: 'panel-default'}[is_active(sensor)]"
       .panel-heading
         strong
           | {{ sensor.device_name }}
         span.small
           |  {{ sensor.device_uid }}
           .pull-right
-            a.option href="" alt="Show Details"
+            a.option href="" ng-click="toggle_settings(sensor)"
               .glyphicon.glyphicon-zoom-in
-            a.option href="" alt="Settings"
+            a.option href="" ng-click="toggle_settings(sensor)"
               .glyphicon.glyphicon-cog
+      ul.list-group  
+        li.list-group-item
+          | Latest Value
+          span.badge.alert-info 
+            | {{ sensor | latest_sensor_value }} *C
+        li.list-group-item
+          | Status
+          span.badge ng-class="{true: 'alert-success', false: 'alert-default'}[is_active(sensor)]"
+            | {{ sensor | sensor_status }}
+        li.list-group-item
+          | Alarm State
+          span.badge.alert-default
+            | OFF 
+        li.list-group-item ng-show="sensor.settings_visible"
+          | Maximal Value [*C]
+          .pull-right
+            input.form-control.input-sm.strict-inline type="number" placeholder="Max"
+        li.list-group-item ng-show="sensor.settings_visible"
+          | Data Interval [ms]
+          .pull-right
+            input.form-control.input-sm.strict-inline type="number" placeholder="Interval"
       .panel-body
-        | Status: 
-        span.label ng-class="{true: 'label-success', false: 'label-default'}[is_active(sensor)]"
-          | {{ sensor_status(sensor) }}
         canvas id="{{sensor.device_uid + '_chart'}}" class="chart chart-line" data="sensor.chart_data" labels="sensor.chart_labels"
-        table.table.table-striped
-         tr
-           th Timestamp
-           th C
-           th F
-         tr ng-repeat="measurement in sensor.measurements | reverse | limitTo: 5"
-           td
-             | {{ measurement.created_at | date : 'dd/MM/yy HH:mm:ss' }}
-           td
-             | {{ measurement.temp_c }}
-           td
-             | {{ measurement.temp_c | celcius_to_fahrenheit }}
+      table.table.table-striped
+       tr
+         th Timestamp
+         th C
+         th F
+       tr ng-repeat="measurement in sensor.measurements | reverse | limitTo: 5"
+         td
+           | {{ measurement.created_at | date : 'dd/MM/yy HH:mm:ss' }}
+         td
+           | {{ measurement.temp_c }}
+         td
+           | {{ measurement.temp_c | celcius_to_fahrenheit }}
   #new_sensor.col-md-4.col-sm-6 ng-controller="SensorsCtrl"
     .panel.panel-default
       .panel-heading

@@ -1,7 +1,6 @@
 .navbar-collapse.collapse
   ul.nav.navbar-nav
     li = link_to t('menu.dashboard'), '#', :'ng-click' => 'navHome()'
-    li = link_to t('menu.settings'), '#', :'ng-click' => 'navSettings()'
     li = link_to t('menu.about'), '#'
   ul.nav.navbar-nav.navbar-right
     li = link_to t('auth.sign_out'), destroy_user_session_path, method: :delete, class: 'navbar-right'

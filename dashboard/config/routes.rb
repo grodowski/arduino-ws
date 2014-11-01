@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   constraints format: :html do
-    get '/sensors' => 'main#index'
+    get '/settings' => 'main#index'
+    get '/about' => 'main#index'
   end
 
   constraints format: :json do

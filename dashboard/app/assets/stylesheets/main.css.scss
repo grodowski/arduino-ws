@@ -16,6 +16,16 @@
   }
 }
 
+.list-group-item {
+  .form-control {
+    &.strict-inline { 
+      margin-top: -5px;
+      max-width: 100px;
+      display: inline-block !important;
+    }
+  }
+}
+
 .flash-messages {
   display: none;
   width: 100%;

@@ -13,8 +13,7 @@ describe SensorsController do
     it 'creates a new sensor' do 
       expect {
         post :create, sensor: sensor_attributes, format: :json
-      }.to change { user.reload.sensors_count }.by(1)
-      response = JSON.parse(response.body)
+      }.to change { user.reload.sensors.count }.by(1)
     end
   end
   

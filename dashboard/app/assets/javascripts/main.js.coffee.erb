@@ -13,6 +13,10 @@ Dashboard.config(['$routeProvider', '$locationProvider', ($routeProvider, $locat
     templateUrl: "<%= asset_path('dashboard.html') %>"
     controller: 'DashboardCtrl'
 
+  $routeProvider.when '/details/:sensor_id',
+    templateUrl: "<%= asset_path('sensor_detail.html') %>"
+    controller: 'SensorDetailCtrl'
+
   $routeProvider.when '/sensors',
     templateUrl: "<%= asset_path('sensors.html') %>"
     controller: 'SensorsCtrl'

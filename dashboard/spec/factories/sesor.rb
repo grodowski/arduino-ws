@@ -1,8 +1,9 @@
 FactoryGirl.define do
   factory :sensor do
     device_name 'Remote Sensor'
-    device_uid 'S1234'
-
+    sequence :device_uid do |n| 
+      "S000#{n}"
+    end
     measurements { [build(:measurement), build(:measurement)] }
   end
 end
