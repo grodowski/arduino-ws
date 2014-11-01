@@ -7,7 +7,7 @@
         span.small
           |  {{ sensor.device_uid }}
           .pull-right
-            a.option href="" ng-click="toggle_settings(sensor)"
+            a.option href="" ng-click="show_details(sensor)"
               .glyphicon.glyphicon-zoom-in
             a.option href="" ng-click="toggle_settings(sensor)"
               .glyphicon.glyphicon-cog
@@ -33,7 +33,8 @@
           .pull-right
             input.form-control.input-sm.strict-inline type="number" placeholder="Interval"
       .panel-body
-        canvas id="{{sensor.device_uid + '_chart'}}" class="chart chart-line" data="sensor.chart_data" labels="sensor.chart_labels"
+        .chart-container
+          canvas id="{{sensor.device_uid + '_chart'}}" class="chart chart-line" data="sensor.chart_data" labels="sensor.chart_labels" options="{showTooltips: true, pointHitDetectionRadius: 2}"
       table.table.table-striped
        tr
          th Timestamp

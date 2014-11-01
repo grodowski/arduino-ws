@@ -1,8 +1,46 @@
 .row
-  .col-xs-12.sensor-tile-wrapper
-    .panel.panel-primary
+  .col-sm-12.sensor-tile-wrapper
+    .panel.panel-primary ng-if="sensor"
       .panel-heading
-        | Witam {{ sensor_id }}
+        | {{ sensor.device_name }}
         .pull-right
           a.option href="" ng-click="navHome()"
             .glyphicon.glyphicon-th-large
+      ul.list-group
+        li.list-group-item
+          | Device UID
+          span.badge
+            | {{ sensor.device_uid }}
+      .panel-body
+        .row          
+          .col-sm-6
+            .form-group
+              label for="start_time"
+                |  &nbsp;Start Time&nbsp;
+              input.form-control disabled="" type="text" name="start_time" value="{{ status.start_time | date : 'dd/MM/yy HH:mm:ss' }}"
+          .col-sm-6
+            .form-group
+              label for="end_time"
+                |  &nbsp;End Time&nbsp;
+              input.form-control disabled="" type="text" name="end_time" value="{{ status.end_time | date : 'dd/MM/yy HH:mm:ss' }}"
+        .row          
+          .col-sm-12
+            .pull-right      
+              .form-group
+                .btn-group
+                  .btn.btn-default ng-click="fetch_sensor()"
+                    span.glyphicon.glyphicon-refresh ng-class="{rotating: status.loading}"
+                    |  Refresh
+                  .btn.btn-default ng-click="move_left()"
+                    span.glyphicon.glyphicon-chevron-left
+                    |  Back
+                  .btn.btn-default ng-click="move_right()"
+                    = "Forward "
+                    span.glyphicon.glyphicon-chevron-right
+        .chart-container
+          canvas id="sensor_detail_chart" class="chart-line" data="chart_data" labels="chart_labels" options="chart_options"
+          .pull-right
+            | Visible Samples: {{ sensor.measurements_count }}
+                
+            
+        

@@ -1,6 +1,15 @@
 .navbar-collapse.collapse
   ul.nav.navbar-nav
-    li = link_to t('menu.dashboard'), '#', :'ng-click' => 'navHome()'
-    li = link_to t('menu.about'), '#'
+    li 
+      = link_to '#', :'ng-click' => 'navHome()' do 
+        span.glyphicon.glyphicon-th-large
+        = " #{t('menu.dashboard')}"
+    li 
+      = link_to '#', :'ng-click' => 'navAbout()' do 
+        span.glyphicon.glyphicon-info-sign
+        = " #{t('menu.about')}"
   ul.nav.navbar-nav.navbar-right
-    li = link_to t('auth.sign_out'), destroy_user_session_path, method: :delete, class: 'navbar-right'
+    li
+      = link_to destroy_user_session_path, method: :delete, class: 'navbar-right' do
+        span.glyphicon.glyphicon-remove
+        = " #{t('auth.sign_out')}"

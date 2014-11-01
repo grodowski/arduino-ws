@@ -17,12 +17,11 @@ Dashboard.config(['$routeProvider', '$locationProvider', ($routeProvider, $locat
     templateUrl: "<%= asset_path('sensor_detail.html') %>"
     controller: 'SensorDetailCtrl'
 
-  $routeProvider.when '/sensors',
-    templateUrl: "<%= asset_path('sensors.html') %>"
-    controller: 'SensorsCtrl'
+  $routeProvider.when '/about',
+    templateUrl: "<%= asset_path('about.html') %>"
 
   Chart.defaults.global.animation = false
   Chart.defaults.global.showTooltips = false
-  Chart.defaults.global.scaleIntegersOnly = true
+  Chart.defaults.global.scaleIntegersOnly = false
   
 ])

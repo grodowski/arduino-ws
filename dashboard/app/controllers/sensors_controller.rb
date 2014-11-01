@@ -2,7 +2,11 @@ class SensorsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  def index
+  def show 
+    offset = params[:offset].to_i || 50
+    limit = params[:limit].to_i || offset
+    sensor = Sensor.where(_id: params[:id]).slice(measurements: [offset, limit]).first
+    render json: sensor
   end
 
   def create

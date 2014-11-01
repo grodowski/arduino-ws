@@ -3,6 +3,7 @@ require 'goliath/websocket'
 require 'json'
 require 'em-mongo'
 require 'em-hiredis'
+require 'hashie'
 
 # usage 
 # ruby client_socet_server.rb -sv -p 9001
@@ -35,8 +36,16 @@ class ClientSocketServer < Goliath::WebSocket
 
   end
 
-  def on_message(env)
-
+  def on_message(env, msg)
+    body = Hashie::Mash.new(JSON.parse msg)
+    if body.type == 'subscr'
+      c = body.device_uid
+      pubsub = env[:redis].pubsub
+      pubsub.subscribe(c).callback do 
+        env[:channels] << c
+        env.logger.info "subscribed to #{c}"
+      end 
+    end
   end
 
   def on_close(env)

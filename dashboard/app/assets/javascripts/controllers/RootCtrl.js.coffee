@@ -2,8 +2,8 @@
   $scope.navHome = ->
     $location.path('/')
 
-  $scope.navSettings = ->
-    $location.path('/settings')
+  $scope.navAbout = ->
+    $location.path('/about')
     
   $scope.show_flash = (msg) -> 
     alert(msg)

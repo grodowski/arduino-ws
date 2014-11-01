@@ -1,3 +1,4 @@
 angular.module('Dashboard').filter 'reverse', ->
   return (items) ->
-    items.slice().reverse();
+    if items
+      items.slice().reverse();

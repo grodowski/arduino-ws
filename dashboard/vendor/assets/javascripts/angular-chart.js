@@ -76,24 +76,32 @@
     return {
       restrict: 'CA',
       scope: {
-        id: '@',
         data: '=',
         labels: '=',
         options: '=',
         series: '=',
+        colours: '=',
         chartType: '=',
         legend: '@',
         click: '='
       },
       link: function (scope, elem, attrs) {
-        var chart;
+        var chart, container = document.createElement('div');
+        container.className = 'chart-container';
+        elem.replaceWith(container);
+        container.appendChild(elem[0]);
 
         scope.$watch('data', function (newVal, oldVal) {
-          if (hasDataSets(type) && ! newVal[0].length) return;
+          if (! newVal || ! newVal.length || (hasDataSets(type) && ! newVal[0].length)) return;
           var chartType = type || scope.chartType;
           if (! chartType) return;
-          if (chart) updateChart (chart, chartType, newVal);
-          else chart = createChart(chartType, scope, elem);
+
+          if (chart) {
+            if (canUpdateChart(chartType, newVal, oldVal)) return updateChart(chart, chartType, newVal, scope);
+            chart.destroy();
+          }
+
+          chart = createChart(chartType, scope, elem);
         }, true);
 
         scope.$watch('chartType', function (newVal, oldVal) {
@@ -105,9 +113,20 @@
     };
   }
 
+  function canUpdateChart(type, newVal, oldVal) {
+    if (newVal && oldVal && newVal.length && oldVal.length) {
+      return hasDataSets(type) ?
+        newVal[0].length === oldVal[0].length :
+        newVal.length === oldVal.length;
+    }
+    return false;
+  }
+
   function createChart (type, scope, elem) {
-    var cvs = document.getElementById(scope.id), ctx = cvs.getContext("2d");
-    var data = hasDataSets(type) ? getDataSets(scope.labels, scope.data, scope.series || []) : getData(scope.labels, scope.data);
+    var cvs = elem[0], ctx = cvs.getContext("2d");
+    var data = hasDataSets(type) ?
+      getDataSets(scope.labels, scope.data, scope.series || [], scope.colours) :
+      getData(scope.labels, scope.data, scope.colours);
     var chart = new Chart(ctx)[type](data, scope.options || {});
     if (scope.click) {
       cvs.onclick = function (evt) {
@@ -117,15 +136,22 @@
         }
       };
     }
-    if (scope.legend) {
-      elem.parent().append(chart.generateLegend());
-    }
+    if (scope.legend) setLegend(elem, chart);
     return chart;
   }
 
-  function updateChart (chart, type, values) {
+  function setLegend (elem, chart) {
+    var $parent = elem.parent(),
+        $oldLegend = $parent.find('chart-legend'),
+        legend = '<chart-legend>' + chart.generateLegend() + '</chart-legend>';
+    if ($oldLegend.length) $oldLegend.replaceWith(legend);
+    else $parent.append(legend);
+  }
+
+  function updateChart (chart, type, values, scope) {
     if (hasDataSets(type)){
         chart.datasets.forEach(function (dataset, i) {
+          if (scope.colours) updateColours(dataset, scope.colours[i]);
           (dataset.points || dataset.bars).forEach(function (dataItem, j) {
             dataItem.value = values[i][j];
           });
@@ -133,20 +159,30 @@
     } else {
       chart.segments.forEach(function (segment, i) {
         segment.value = values[i];
+        if (scope.colours) updateColours(segment, scope.colours[i]);
       });
     }
     chart.update();
+  }
+
+  function updateColours (item, colour) {
+    item.fillColor = colour.fillColor;
+    item.highlightColor = colour.highlightColor;
+    item.strokeColor = colour.strokeColor;
+    item.pointColor = colour.pointColor;
+    item.pointStrokeColor = colour.pointStrokeColor;
   }
 
   function hasDataSets (type) {
     return ['Line', 'Bar', 'Radar'].indexOf(type) > -1;
   }
 
-  function getDataSets (labels, data, series) {
+  function getDataSets (labels, data, series, colours) {
+    colours = colours || Chart.defaults.global.colours;
     return {
       labels: labels,
       datasets: data.map(function (item, i) {
-        var dataSet = clone(Chart.defaults.global.colours[i]);
+        var dataSet = clone(colours[i]);
         dataSet.label = series[i];
         dataSet.data = item;
         return dataSet;
@@ -162,13 +198,14 @@
     return newObj;
   }
 
-  function getData (labels, data) {
+  function getData (labels, data, colours) {
+    colours = colours || Chart.defaults.global.colours;
     return labels.map(function (label, i) {
       return {
         label: label,
         value: data[i],
-        color: Chart.defaults.global.colours[i].strokeColor,
-        highlight: Chart.defaults.global.colours[i].pointHighlightStroke
+        color: colours[i].strokeColor,
+        highlight: colours[i].pointHighlightStroke
       };
     });
   }

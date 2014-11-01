@@ -3,6 +3,10 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    respond_with DashboardPresenter.new(current_user)
+    sensors = Sensor.where(user_id: current_user._id).slice(measurements: -20)
+    render json: {
+      current_user: current_user.as_json(only: [:_id, :email]),
+      sensors: sensors
+    }
   end
 end
