@@ -1,15 +1,15 @@
 @SensorDetailCtrl = ($scope, $http, $routeParams, sensor_service) ->         
   $scope.status =
-    offset: -500
-    limit: 500
+    offset: -5000
+    limit: 5000
         
   $scope.fetch_sensor = -> 
     $scope.status.loading = true
     offset = $scope.status.offset
     limit = $scope.status.limit
     sensor_service.fetch_details $routeParams.sensor_id, offset, limit, (data) ->
-      $scope.sensor = data
-      $scope.sensor.measurements_count = data.measurements.length
+      $scope.sensor = data.sensor
+      $scope.sensor.measurements_count = data.measurements_count
       $scope.chart_options = if $scope.sensor.measurements_count > 100 then _dense_chart_options else _sparse_chart_options 
       _init_chart()
       _update_status()
