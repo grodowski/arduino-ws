@@ -1,3 +1,10 @@
+production:
+  sessions:
+    default:
+      database: dashboard_production
+      hosts:
+        - localhost:27017
+      options:
 development:
   # Configure available database sessions. (required)
   sessions:
