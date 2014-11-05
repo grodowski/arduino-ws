@@ -4,6 +4,9 @@
   $scope.is_active = (sensor) -> 
     sensor_service.is_active(sensor)
   
+  $scope.has_data = (sensor) -> 
+    sensor_service.has_measurements(sensor)
+  
   $scope.show_details = (sensor) ->
     $location.path '/details/' + sensor._id.$oid
   

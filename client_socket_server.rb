@@ -8,8 +8,10 @@ require 'dotenv'
 
 Dotenv.load
 
-# usage 
+# dev:
 # ruby client_socet_server.rb -sv -p 9001
+# production:
+# ruby client_socket_server.rb -l dashboard/log/client_socket.log -p 9001 -d -e production
 
 class ClientSocketServer < Goliath::WebSocket
   def on_open(env)

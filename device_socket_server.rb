@@ -10,6 +10,8 @@ Dotenv.load
 
 # usage
 # ruby device_socket_server.rb -sv -p 9000
+# production:
+# ruby device_socket_server.rb -l dashboard/log/device_socket.log -p 9000 -d -e production
 
 class DeviceSocketServer < Goliath::WebSocket
   PAYLOAD_TYPES = %w(data)

@@ -33,9 +33,11 @@
           .pull-right
             input.form-control.input-sm.strict-inline type="number" placeholder="Interval"
       .panel-body
-        .chart-container
+        .alert.alert-info ng-show="!has_data(sensor)"
+          | Please connect the device to start recording data...
+        .chart-container ng-show="has_data(sensor)"
           canvas id="{{sensor.device_uid + '_chart'}}" class="chart chart-line" data="sensor.chart_data" labels="sensor.chart_labels" options="{showTooltips: true, pointHitDetectionRadius: 2}"
-      table.table.table-striped
+      table.table.table-striped ng-show="has_data(sensor)"
        tr
          th Timestamp
          th C

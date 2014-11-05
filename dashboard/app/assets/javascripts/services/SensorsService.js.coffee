@@ -34,9 +34,14 @@ angular.module('Dashboard').factory 'sensor_service', ($http, $rootScope, $timeo
       return true
       
     is_active: (sensor) -> 
-      if sensor.measurements && sensor.measurements.length > 0
+      if @has_measurements(sensor)
         now = new Date()
         now - @last_activity(sensor) < 5000
+      else
+        false
+    
+    has_measurements: (sensor) ->
+      sensor.measurements && sensor.measurements.length > 0
     
     last_activity: (sensor) ->
       if sensor.measurements
@@ -58,7 +63,7 @@ angular.module('Dashboard').factory 'sensor_service', ($http, $rootScope, $timeo
     _init_realtime_updates: ->
       if @ws
         return
-      @ws = new WebSocket("ws://localhost:9001/" + @user._id.$oid);
+      @ws = new WebSocket("ws://128.199.60.164:9001/" + @user._id.$oid);
       @ws.onopen = ->
         console.log "Client WebSocket open"
       @ws.onmessage = (evt) =>
