@@ -4,9 +4,11 @@ require 'em-hiredis'
 require 'em-mongo'
 require 'json'
 require 'hashie'
-require 'dotenv'
 
-Dotenv.load
+if Goliath.env?(:development)
+  require 'dotenv'
+  Dotenv.load
+end
 
 # usage
 # ruby device_socket_server.rb -sv -p 9000

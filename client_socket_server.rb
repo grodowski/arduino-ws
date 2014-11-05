@@ -4,9 +4,11 @@ require 'json'
 require 'em-mongo'
 require 'em-hiredis'
 require 'hashie'
-require 'dotenv'
 
-Dotenv.load
+if Goliath.env?(:development)
+  require 'dotenv'
+  Dotenv.load
+end
 
 # dev:
 # ruby client_socet_server.rb -sv -p 9001
