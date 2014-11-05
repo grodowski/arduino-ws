@@ -4,6 +4,9 @@ require 'em-hiredis'
 require 'em-mongo'
 require 'json'
 require 'hashie'
+require 'dotenv'
+
+Dotenv.load
 
 # usage
 # ruby device_socket_server.rb -sv -p 9000
@@ -12,8 +15,8 @@ class DeviceSocketServer < Goliath::WebSocket
   PAYLOAD_TYPES = %w(data)
   
   def on_open(env)
-    env['mongo'] = EM::Mongo::Connection.new('localhost')
-    env['db'] = env['mongo'].db('dashboard_development')
+    env['mongo'] = EM::Mongo::Connection.new(ENV['DB_HOST'])
+    env['db'] = env['mongo'].db(ENV['DB_NAME'])
     env['redis'] = EM::Hiredis.connect
     
     uid = env['REQUEST_URI'].gsub('/', '')

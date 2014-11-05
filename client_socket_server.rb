@@ -4,14 +4,19 @@ require 'json'
 require 'em-mongo'
 require 'em-hiredis'
 require 'hashie'
+require 'dotenv'
+
+Dotenv.load
 
 # usage 
 # ruby client_socet_server.rb -sv -p 9001
 
 class ClientSocketServer < Goliath::WebSocket
   def on_open(env)
-    env[:mongo] = EM::Mongo::Connection.new('localhost')
-    env[:db] = env[:mongo].db('dashboard_development')
+    env[:mongo] = EM::Mongo::Connection.new(ENV['DB_HOST'])
+    
+    # TODO set database in production!
+    env[:db] = env[:mongo].db(ENV['DB_NAME'])
     env[:redis] = EM::Hiredis.connect
     env[:channels] = []
 
