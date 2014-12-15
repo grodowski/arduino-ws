@@ -17,12 +17,6 @@ describe DashboardController do
       expect(body['sensors'].count).to eq 2
       expect(body['sensors'][0]['measurements'].first['temp_c']).to eq 12.5
     end
-
-    it 'raises error for html mime' do
-      expect {
-        get :show
-      }.to raise_error(ActionController::UnknownFormat)
-    end
   end
 
 end

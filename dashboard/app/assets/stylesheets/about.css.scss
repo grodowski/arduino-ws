@@ -1,0 +1,37 @@
+#about {
+  img { 
+    width: 100px;
+  }
+  
+  #footer {
+    padding: 15px;
+  }
+  
+  .logo { 
+    padding: 20px; 
+    height: 140px;
+    text-align: center;
+  }
+    
+  .ruby, .ror {
+    padding-top: 35px;
+    img {
+      width: 60px;
+    }
+  }
+  
+  .ror {
+    padding-top: 32px;
+  }
+  
+  .angular {
+    padding-top: 22px;
+    img {
+      margin: 10px;
+    }
+  }
+  
+  .arduino {
+    padding-top: 42px;
+  }
+}

@@ -1,6 +1,6 @@
 html ng-app="Dashboard"
   head
-    meta name="viewport" content="width=device-width, initial-scale=1"
+    = render 'shared/viewport'
     title = t('project_name')
     = stylesheet_link_tag    'application', media: 'all'
     = javascript_include_tag 'application', controller_name
@@ -8,7 +8,7 @@ html ng-app="Dashboard"
     = yield :head
   body ng-controller="RootCtrl"
     = render 'shared/flash_messages'
-    .navbar.navbar-default.navbar-static-top role="navigation"
+    .navbar.navbar-inverse.navbar-static-top role="navigation"
       .container-fluid
         .navbar-header
           button.navbar-toggle.collapsed data-target=".navbar-collapse" data-toggle="collapse" type="button"
