@@ -63,7 +63,7 @@ angular.module('Dashboard').factory 'sensor_service', ($http, $rootScope, $timeo
     _init_realtime_updates: ->
       if @ws
         return
-      @ws = new WebSocket("ws://128.199.60.164:9001/" + @user._id.$oid);
+      @ws = new WebSocket("ws://sensors.grodowski.com:9001/" + @user._id.$oid);
       @ws.onopen = ->
         console.log "Client WebSocket open"
       @ws.onmessage = (evt) =>

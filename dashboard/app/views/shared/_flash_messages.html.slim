@@ -8,5 +8,11 @@
   - if flash.present?
     javascript:
       $(document).ready(function() {
-        $('.flash-messages').slideDown();
+        container = $('.flash-messages');
+        setTimeout(function() {
+          container.slideDown();
+          setTimeout(function() {
+            container.slideUp();
+          }, 5000);
+        }, 500);
       });
