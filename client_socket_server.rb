@@ -1,5 +1,8 @@
 require 'goliath'
 require 'goliath/websocket'
+require 'em-hiredis'
+require 'em-mongo'
+require 'em-synchrony/em-mongo'
 require 'json'
 require 'hashie'
 
@@ -20,22 +23,20 @@ class ClientSocketServer < Goliath::WebSocket
     env[:pubsub] = redis.pubsub
     env[:user_oid] = BSON::ObjectId(env['REQUEST_URI'].gsub('/', ''))
 
-    sensors = db.collection(:sensors).find(user_id: env[:user_oid]).defer_as_a
-    sensors.callback do |arr|
-      env[:pubsub].on(:message) do |channel, msg|
-        env.logger.info "#{channel}: #{msg}"
-        env['handler'].send_text_frame msg
-      end
-      arr.each do |sensor|
-        next unless sensor
-        c_name = sensor['device_uid']
-        env[:pubsub].subscribe(c_name).callback do
-          env[:channels] << (c_name)
-          env.logger.info "subscribed to #{c_name}"
-        end
+    sensors = db.collection(:sensors).find({user_id: env[:user_oid]}, {fields: [:_id, :device_uid]})
+    puts "SENSORS #{sensors}"
+    env[:pubsub].on(:message) do |channel, msg|
+      env.logger.info "#{channel}: #{msg}"
+      env['handler'].send_text_frame msg
+    end
+    sensors.each do |sensor|
+      next unless sensor
+      c_name = sensor['device_uid']
+      env[:pubsub].subscribe(c_name).callback do
+        env[:channels] << (c_name)
+        env.logger.info "subscribed to #{c_name}"
       end
     end
-
   end
 
   def on_message(env, msg)
