@@ -7,7 +7,7 @@ require 'em-websocket-client'
 require 'json'
 
 EM.run do
-  conn = EventMachine::WebSocketClient.connect("ws://128.199.60.164:9000/#{ARGV[0]}")
+  conn = EventMachine::WebSocketClient.connect("ws://sensors.grodowski.com:9000/#{ARGV[0]}")
   prg = Random.new
   val = prg.rand(50.0)
   conn.callback do
