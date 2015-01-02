@@ -1,4 +1,4 @@
-require 'em-synchrony/em-hiredis'
+require 'em-hiredis'
 require 'em-synchrony/em-mongo'
 
 config['db'] = EM::Synchrony::ConnectionPool.new(size: 5) do 

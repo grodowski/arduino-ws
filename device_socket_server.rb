@@ -1,7 +1,5 @@
 require 'goliath'
 require 'goliath/websocket'
-require 'em-synchrony/em-hiredis'
-require 'em-synchrony/em-mongo'
 require 'json'
 require 'hashie'
 
