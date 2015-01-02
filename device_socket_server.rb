@@ -17,17 +17,10 @@ end
 
 class DeviceSocketServer < Goliath::WebSocket
   PAYLOAD_TYPES = %w(data)
-  
-  def initialize
-    super
-    @mongo = EM::Mongo::Connection.new(ENV['DB_HOST'])
-    @db = @mongo.db(ENV['DB_NAME'])
-    @redis = EM::Hiredis.connect
-  end
-  
+    
   def on_open(env)    
     uid = env['REQUEST_URI'].gsub('/', '')
-    s_req = @db.collection(:sensors).first({device_uid: uid})
+    s_req = db.collection(:sensors).first({device_uid: uid})
     s_req.callback do |data|
       if data
         env['sensor'] = data
@@ -47,7 +40,7 @@ class DeviceSocketServer < Goliath::WebSocket
       return 
     end
     
-    @db.collection(:sensors).update(
+    db.collection(:sensors).update(
       {device_uid: env['sensor']['device_uid']},
       {'$push' => 
         {measurements: 
@@ -57,7 +50,7 @@ class DeviceSocketServer < Goliath::WebSocket
     )
     
     data_json = data.merge({device_uid: env['sensor']['device_uid'], created_at: timestamp.iso8601, updated_at: timestamp.iso8601}).to_json
-    @redis.publish env['sensor']['device_uid'], data_json
+    redis.publish env['sensor']['device_uid'], data_json
 
     env.logger.info "#{env['sensor']['device_uid']} - temp: #{data.temp_c}"
     env['handler'].send_text_frame({r: 'OK'}.to_json)

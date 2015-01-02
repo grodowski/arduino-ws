@@ -1,0 +1,8 @@
+config['db'] = EM::Synchrony::ConnectionPool.new(size: 5) do 
+   mongo = EM::Mongo::Connection.new(ENV['DB_HOST'])
+   mongo.db ENV['DB_NAME']
+ end
+
+config['redis'] = EM::Synchrony::ConnectionPool.new(size: 5) do 
+  EM::Hiredis.connect
+end

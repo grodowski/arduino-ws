@@ -16,19 +16,12 @@ end
 # ruby client_socket_server.rb -l dashboard/log/client_socket.log -p 9001 -d -e production
 
 class ClientSocketServer < Goliath::WebSocket
-  def initialize
-    super
-    @mongo = EM::Mongo::Connection.new(ENV['DB_HOST'])
-    @db = @mongo.db(ENV['DB_NAME'])
-    @redis = EM::Hiredis.connect
-  end
-  
   def on_open(env)    
     env[:channels] = []
-    env[:pubsub] = @redis.pubsub
+    env[:pubsub] = redis.pubsub
     env[:user_oid] = BSON::ObjectId(env['REQUEST_URI'].gsub('/', ''))
 
-    sensors = @db.collection(:sensors).find(user_id: env[:user_oid]).defer_as_a
+    sensors = db.collection(:sensors).find(user_id: env[:user_oid]).defer_as_a
     sensors.callback do |arr|
       env[:pubsub].on(:message) do |channel, msg|
         env.logger.info "#{channel}: #{msg}"
