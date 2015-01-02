@@ -20,15 +20,13 @@ class DeviceSocketServer < Goliath::WebSocket
     
   def on_open(env)    
     uid = env['REQUEST_URI'].gsub('/', '')
-    s_req = db.collection(:sensors).first({device_uid: uid})
-    s_req.callback do |data|
-      if data
-        env['sensor'] = data
-        env.logger.info "setup ready: sensor #{env['sensor']['device_uid']}"
-      else
-        env.logger.error "setup failed: unknown uid #{uid}."
-        env['handler'].send_text_frame({e: "uid #{uid} unknown"}.to_json)
-      end
+    data = db.collection(:sensors).first({device_uid: uid})
+    if data
+      env['sensor'] = data
+      env.logger.info "setup ready: sensor #{env['sensor']['device_uid']}"
+    else
+      env.logger.error "setup failed: unknown uid #{uid}."
+      env['handler'].send_text_frame({e: "uid #{uid} unknown"}.to_json)
     end
   end
 
