@@ -1,5 +1,8 @@
 require 'goliath'
 require 'goliath/websocket'
+require 'em-hiredis'
+require 'em-mongo'
+require 'em-synchrony/em-mongo'
 require 'json'
 require 'hashie'
 
@@ -18,7 +21,9 @@ class DeviceSocketServer < Goliath::WebSocket
     
   def on_open(env)    
     uid = env['REQUEST_URI'].gsub('/', '')
-    data = db.collection(:sensors).first({device_uid: uid})
+    env[:db] = db
+    env[:redis] = redis
+    data = db.collection(:sensors).first({device_uid: uid}, {fields: [:_id, :device_uid]})
     if data
       env['sensor'] = data
       env.logger.info "setup ready: sensor #{env['sensor']['device_uid']}"
@@ -36,7 +41,7 @@ class DeviceSocketServer < Goliath::WebSocket
       return 
     end
     
-    db.collection(:sensors).update(
+    env[:db].collection(:sensors).update(
       {device_uid: env['sensor']['device_uid']},
       {'$push' => 
         {measurements: 
@@ -46,7 +51,7 @@ class DeviceSocketServer < Goliath::WebSocket
     )
     
     data_json = data.merge({device_uid: env['sensor']['device_uid'], created_at: timestamp.iso8601, updated_at: timestamp.iso8601}).to_json
-    redis.publish env['sensor']['device_uid'], data_json
+    env[:redis].publish env['sensor']['device_uid'], data_json
 
     env.logger.info "#{env['sensor']['device_uid']} - temp: #{data.temp_c}"
     env['handler'].send_text_frame({r: 'OK'}.to_json)

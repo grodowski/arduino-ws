@@ -16,6 +16,7 @@ end
 class ClientSocketServer < Goliath::WebSocket
   def on_open(env)    
     env[:channels] = []
+    env[:db] = db
     env[:pubsub] = redis.pubsub
     env[:user_oid] = BSON::ObjectId(env['REQUEST_URI'].gsub('/', ''))
 
