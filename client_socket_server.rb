@@ -1,8 +1,8 @@
 require 'goliath'
 require 'goliath/websocket'
 require 'json'
-require 'em-mongo'
-require 'em-hiredis'
+require 'em-synchrony/em-hiredis'
+require 'em-synchrony/em-mongo'
 require 'hashie'
 
 if Goliath.env?(:development)
