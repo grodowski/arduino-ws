@@ -42,7 +42,7 @@
          th Timestamp
          th C
          th F
-       tr ng-repeat="measurement in sensor.measurements | limitTo: 5"
+       tr ng-repeat="measurement in sensor.measurements | reverse | limitTo: 5"
          td
            | {{ measurement.created_at | date : 'dd/MM/yy HH:mm:ss' }}
          td
