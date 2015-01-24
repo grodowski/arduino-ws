@@ -1,6 +1,6 @@
 @SensorDetailCtrl = ($scope, $http, $routeParams, sensor_service) ->         
   $scope.status =
-    offset: -5000
+    offset: 0
     limit: 5000
         
   $scope.fetch_sensor = -> 
@@ -15,13 +15,12 @@
       _update_status()
       
   $scope.move_left = ->
-    $scope.status.offset = $scope.status.offset - $scope.status.limit
+    $scope.status.offset = $scope.status.offset + $scope.status.limit
     $scope.fetch_sensor()
   
   $scope.move_right = -> 
-    $scope.status.offset = $scope.status.offset + $scope.status.limit
-    if $scope.status.offset > -$scope.status.limit 
-      $scope.status.offset = -$scope.status.limit 
+    $scope.status.offset = $scope.status.offset - $scope.status.limit
+    if $scope.status.offset < 0 then $scope.status.offset = 0
     $scope.fetch_sensor()
   
   # Private Methods

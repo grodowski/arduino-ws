@@ -8,6 +8,7 @@
     sensor_service.has_measurements(sensor)
   
   $scope.show_details = (sensor) ->
+    console.log sensor
     $location.path '/details/' + sensor._id.$oid
   
   $scope.toggle_settings = (sensor) -> 

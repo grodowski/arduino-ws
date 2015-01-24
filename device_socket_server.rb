@@ -41,14 +41,10 @@ class DeviceSocketServer < Goliath::WebSocket
       return 
     end
     
-    env[:db].collection(:sensors).update(
-      {device_uid: env['sensor']['device_uid']},
-      {'$push' => 
-        {measurements: 
-          {temp_c: data.temp_c, created_at: timestamp, updated_at: timestamp}
-        }
-      }
-    )
+    env[:db].collection(:measurements).insert(sensor_id: env['sensor']['_id'],
+                                        temp_c: data.temp_c,
+                                        created_at: timestamp, 
+                                        updated_at: timestamp)
     
     data_json = data.merge({device_uid: env['sensor']['device_uid'], created_at: timestamp.iso8601, updated_at: timestamp.iso8601}).to_json
     env[:redis].publish env['sensor']['device_uid'], data_json

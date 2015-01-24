@@ -3,28 +3,30 @@ class SensorsController < ApplicationController
   respond_to :json
 
   def show 
-    offset = params[:offset].to_i || 50
-    limit = params[:limit].to_i || offset
-    sensor = Sensor.where(_id: params[:id]).slice(measurements: [offset, limit]).first.as_json
+    offset = params[:offset].to_i || 0
+    limit = params[:limit].to_i || 5000
+    sensor = Sensor.find(params[:id])
+    measurements = Measurement.where(sensor_id: sensor[:_id]).order({'$natural' => -1}).skip(offset).limit(limit).as_json
     
-    actual_measurements = sensor['measurements'].size
+    actual_measurements = measurements.size
     
     level = 10
     cluster = []
-    for i in 0..(sensor['measurements'].size)
+    for i in 0..(actual_measurements)
       next if i % level != 0
-      chunk = sensor['measurements'][i..(i + level -1)].compact
+      chunk = measurements[i..(i + level -1)].compact
       next if chunk.empty?
       temp_c = (chunk.map { |x| x['temp_c'] }.reduce(:+) / chunk.size).round(2)
       cluster << {
         temp_c: temp_c,
-        created_at: sensor['measurements'][i]['created_at']
+        created_at: measurements[i]['created_at']
       }
     end
     
-    sensor['measurements'] = cluster
+    sensor_json = sensor.as_json 
+    sensor_json[:measurements] = cluster.reverse
     render json: {
-      sensor: sensor,
+      sensor: sensor_json,
       clustered: true,
       measurements_count: actual_measurements
     }

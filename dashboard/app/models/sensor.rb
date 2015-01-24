@@ -3,7 +3,7 @@ class Sensor
   include Mongoid::Timestamps
 
   belongs_to :user
-  embeds_many :measurements
+  has_many :measurements
 
   field :device_uid, type: String
   field :device_name, type: String
