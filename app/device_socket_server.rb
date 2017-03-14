@@ -18,40 +18,6 @@ end
 
 class DeviceSocketServer < Goliath::WebSocket
   PAYLOAD_TYPES = %w(data)
-    
-  def on_open(env)    
-    uid = env['REQUEST_URI'].gsub('/', '')
-    env[:db] = db
-    env[:redis] = redis
-    data = db.collection(:sensors).first({device_uid: uid}, {fields: [:_id, :device_uid]})
-    if data
-      env['sensor'] = data
-      env.logger.info "setup ready: sensor #{env['sensor']['device_uid']}"
-    else
-      env.logger.error "setup failed: unknown uid #{uid}."
-      env['handler'].send_text_frame({e: "uid #{uid} unknown"}.to_json)
-    end
-  end
-
-  def on_message(env, msg)
-    timestamp = Time.now
-    data = Hashie::Mash.new(JSON.parse msg)
-    unless env['sensor'] && PAYLOAD_TYPES.include?(data.type) && data.temp_c
-      env.logger.info 'sensor not initialised or wrong format'
-      return 
-    end
-    
-    env[:db].collection(:measurements).insert(sensor_id: env['sensor']['_id'],
-                                        temp_c: data.temp_c,
-                                        created_at: timestamp, 
-                                        updated_at: timestamp)
-    
-    data_json = data.merge({device_uid: env['sensor']['device_uid'], created_at: timestamp.iso8601, updated_at: timestamp.iso8601}).to_json
-    env[:redis].publish env['sensor']['device_uid'], data_json
-
-    env.logger.info "#{env['sensor']['device_uid']} - temp: #{data.temp_c}"
-    env['handler'].send_text_frame({r: 'OK'}.to_json)
-  end
 
   def on_close(env)
     env.logger.info('Socket connection closed')
